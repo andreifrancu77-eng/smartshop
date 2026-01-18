@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -14,7 +14,7 @@ import {
   ShoppingBag,
 } from "lucide-react";
 
-export default function CheckoutSuccessPage() {
+function CheckoutSuccessContent() {
   const searchParams = useSearchParams();
   const paymentIntent = searchParams.get("payment_intent");
   const [orderCode, setOrderCode] = useState<string | null>(null);
@@ -175,5 +175,25 @@ export default function CheckoutSuccessPage() {
         </motion.div>
       </div>
     </main>
+  );
+}
+
+export default function CheckoutSuccessPage() {
+  return (
+    <Suspense fallback={
+      <main className="min-h-screen bg-slate-50 pt-24">
+        <div className="container mx-auto px-4 py-12">
+          <div className="max-w-2xl mx-auto text-center">
+            <div className="animate-pulse">
+              <div className="w-24 h-24 mx-auto mb-8 bg-slate-200 rounded-full"></div>
+              <div className="h-8 bg-slate-200 rounded w-64 mx-auto mb-4"></div>
+              <div className="h-4 bg-slate-200 rounded w-96 mx-auto"></div>
+            </div>
+          </div>
+        </div>
+      </main>
+    }>
+      <CheckoutSuccessContent />
+    </Suspense>
   );
 }
