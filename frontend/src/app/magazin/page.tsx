@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -9,7 +9,7 @@ import { api, ProductDTO, Category, Brand, getProductImageUrl } from "@/lib/api"
 import { useCart } from "@/lib/cart-context";
 import Image from "next/image";
 
-export default function MagazinPage() {
+function MagazinPageContent() {
   const searchParams = useSearchParams();
   const categoryParam = searchParams.get("category");
   const brandParam = searchParams.get("brand");
@@ -278,5 +278,31 @@ export default function MagazinPage() {
         )}
       </div>
     </main>
+  );
+}
+
+export default function MagazinPage() {
+  return (
+    <Suspense fallback={
+      <main className="min-h-screen bg-slate-50 pt-24">
+        <div className="container mx-auto px-4 py-8">
+          <div className="mb-8">
+            <div className="h-10 bg-slate-200 rounded w-48 mb-4 animate-pulse"></div>
+            <div className="h-5 bg-slate-200 rounded w-96 animate-pulse"></div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="bg-white rounded-2xl p-4 animate-pulse">
+                <div className="aspect-square bg-slate-200 rounded-xl mb-4" />
+                <div className="h-4 bg-slate-200 rounded mb-2" />
+                <div className="h-4 bg-slate-200 rounded w-2/3" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </main>
+    }>
+      <MagazinPageContent />
+    </Suspense>
   );
 }
