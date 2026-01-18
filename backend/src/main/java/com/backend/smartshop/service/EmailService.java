@@ -211,6 +211,11 @@ public class EmailService {
 
     public void sendAdminNotificationEmail(OrderResponse order) {
         try {
+            if (fromEmail == null || fromEmail.isEmpty()) {
+                log.warn("Email configuration missing: spring.mail.username is not set. Skipping admin notification email.");
+                return;
+            }
+
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
