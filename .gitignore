@@ -48,3 +48,11 @@ mvnw.cmd
 coverage/
 .nyc_output/
 
+# Documentation files (README, deployment guides, etc.)
+*.md
+!**/package.json
+!**/tsconfig.json
+
+# Exclude sudexpert-main directory
+sudexpert-main/
+
